@@ -1,3 +1,0 @@
-amd
-nvda
-tsla
