@@ -117,7 +117,6 @@ func add(addition string) {
 func remove(removal string) {
 	file, _ := ioutil.ReadFile("tickers.txt")
 	filestring := string(file)
-	fmt.Println(filestring)
 	replacement := strings.ReplaceAll(filestring, removal+"\n", "")
 	if filestring == replacement {
 		fmt.Println(removal + " not in watchlist")
