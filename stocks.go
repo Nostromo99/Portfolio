@@ -45,19 +45,26 @@ func request(stock string) bool {
 	output, _ := ioutil.ReadAll(resp.Body)
 
 	outputstring := string(output)
+	changepos := strings.LastIndex(outputstring, "lB8g7")
+	changeval := ""
+	if changepos == -1 {
+		changepos = strings.LastIndex(outputstring, "AWuZUe")
+		changeval = string(outputstring[changepos+8 : changepos+25])
+	} else {
+
+		changeval = string(outputstring[changepos+7 : changepos+25])
+	}
+	lastpos := strings.LastIndex(changeval, "<")
+	changeval = changeval[0:lastpos]
 	position := strings.LastIndex(outputstring, "iBp4i")
 	value := string(outputstring[position+14 : position+25])
-	for i := 0; i < len(value); i++ {
-		if string(value[i]) == " " {
-			value = value[0:i]
-			break
-		}
-	}
+	endpoint := strings.LastIndex(value, " ")
+	value = value[0:endpoint]
 	if _, err := strconv.ParseFloat(value, 64); err != nil {
 		fmt.Println("invalid input")
 		return false
 	}
-	fmt.Println(stock + ": " + value)
+	fmt.Println(stock + ": " + value + " " + changeval)
 
 	return true
 }
