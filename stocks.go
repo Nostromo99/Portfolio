@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -56,9 +57,10 @@ func request(stock string) bool {
 	}
 	lastpos := strings.LastIndex(changeval, "<")
 	changeval = changeval[0:lastpos]
-	position := strings.LastIndex(outputstring, "iBp4i")
-	value := string(outputstring[position+14 : position+25])
-	endpoint := strings.LastIndex(value, " ")
+	re:=regexp.MustCompile(`Bp4i AP7Wnd">[0-9]`)
+	position:=re.FindStringIndex(outputstring)[1]
+	value := string(outputstring[position-1 : position+25])
+	endpoint := strings.Index(value, " ")
 	value = value[0:endpoint]
 	if _, err := strconv.ParseFloat(value, 64); err != nil {
 		fmt.Println("invalid input")
